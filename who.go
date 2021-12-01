@@ -15,21 +15,25 @@ var red = color.FgRed.Render
 //var yellow = color.FgYellow.Render
 
 func main() {
-	whois_raw := whoisRaw(os.Args[1])
+	if len(os.Args) == 1 {
+		whois_raw := whoisRaw(os.Args[1])
 
-	result, err := whoisparser.Parse(whois_raw)
-	if err == nil {
-		// Print the domain expiration date
-		expireDate := formatTime(result.Domain.expirationDate)
-		fmt.Printf("This domain expires on %s\n", red(expireDate))
+		result, err := whoisparser.Parse(whois_raw)
+		if err == nil {
+			// Print the domain expiration date
+			expireDate := formatTime(result.Domain.ExpirationDate, true)
+			fmt.Printf("This domain expires on %s\n", red(expireDate))
 
-		// Print the registrar name
-		fmt.Println(result.Registrar.Name)
+			// Print the registrar name
+			fmt.Println(result.Registrar.Name)
 
-		// Print the Name Servers
-		fmt.Println(result.Domain.NameServers)
+			// Print the Name Servers
+			fmt.Println(result.Domain.NameServers)
+		} else {
+			fmt.Println(err)
+		}
 	} else {
-		fmt.Println(err)
+		fmt.Println("Usage: whois <domain>")
 	}
 }
 
