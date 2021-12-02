@@ -15,7 +15,7 @@ var red = color.FgRed.Render
 //var yellow = color.FgYellow.Render
 
 func main() {
-	if len(os.Args) == 1 {
+	if len(os.Args) >= 1 {
 		whois_raw := whoisRaw(os.Args[1])
 
 		result, err := whoisparser.Parse(whois_raw)
