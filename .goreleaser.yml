@@ -18,7 +18,6 @@ archives:
       darwin: Darwin
       linux: Linux
       windows: Windows
-      386: i386
       amd64: x86_64
 checksum:
   name_template: 'checksums.txt'
@@ -32,3 +31,11 @@ changelog:
       - '^test:'
 env_files:
   github_token: ~/.config/goreleaser/github_token
+nfpms:
+- maintainer: Tom LeZotte <tom@lezotte.net>
+  description: Whois command line utility.
+  homepage: https://victr.vumc.org
+  license: MIT
+  formats:
+  - deb
+  - rpm

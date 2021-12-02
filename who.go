@@ -13,6 +13,7 @@ import (
 var red = color.FgRed.Render
 //var green = color.FgGreen.Render
 //var yellow = color.FgYellow.Render
+// just a test
 
 func main() {
 	if len(os.Args) == 1 {
