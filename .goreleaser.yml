@@ -2,6 +2,7 @@
 # Make sure to check the documentation at https://goreleaser.com
 before:
   hooks:
+    - rm -rf ./dist
     # You may remove this if you don't use go modules.
     - go mod tidy
     # you may remove this if you don't need go generate
@@ -36,6 +37,9 @@ nfpms:
   description: Whois command line utility.
   homepage: https://victr.vumc.org
   license: MIT
+  contents:
+  - src: ./whois
+    dst: /app001/bin/whois
   formats:
   - deb
   - rpm
