@@ -16,9 +16,9 @@ all:
 next:
 	echo "Next release: v$(NEXT)"
 
-dist:
-	git tag -a v$(NEXT) -m "Release v$(NEXT)"
-	git push --tags origin $(BRANCH)
+release:
+#	git tag -a v$(NEXT) -m "Release v$(NEXT)"
+#	git push --tags origin $(BRANCH)
 	goreleaser release
 
 _software:
