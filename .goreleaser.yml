@@ -37,9 +37,7 @@ nfpms:
   description: Whois command line utility.
   homepage: https://victr.vumc.org
   license: MIT
-  contents:
-  - src: ./whois
-    dst: /app001/bin/whois
+  bindir: /app001/bin
   formats:
   - deb
   - rpm
