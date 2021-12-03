@@ -7,24 +7,32 @@ RELEASE_FILE = $(PACKAGE)-$(VERSION)
 
 .SILENT: all
 .SILENT: next
+.SILENT: _patch
 
 
 # Default target.
 all:
 	echo "Hello $(LOGNAME), nothing to do by default"
-	echo "Try 'make help'"
-
-next:
-	echo "Next release: $(NEXT)"
 
 release:
-#	git tag -a v$(NEXT) -m "Release v$(NEXT)"
-#	git push --tags origin $(BRANCH)
 	autotag -b $(BRANCH)
 	goreleaser release
 
-releaser:
+release-next:
+	echo "Next release: v$(NEXT)"
+
+release-notag:
 	goreleaser release
+
+
+_patch:
+	# fetch all tags and history:
+	git fetch --tags --unshallow --prune
+
+	if [ `git rev-parse --abbrev-ref HEAD` != "$(BRANCH)" ]; then
+		# ensure a local branch exists at 'refs/heads/master'
+		git branch --track master origin/$(BRANCH)
+	fi
 
 _software:
 	brew install goreleaser
