@@ -8,6 +8,7 @@ RELEASE_FILE = $(PACKAGE)-$(VERSION)
 .SILENT: all
 .SILENT: next
 
+
 # Default target.
 all:
 	echo "Hello $(LOGNAME), nothing to do by default"
