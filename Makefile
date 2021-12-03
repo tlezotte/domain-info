@@ -15,7 +15,7 @@ all:
 	echo "Try 'make help'"
 
 next:
-	echo "Next release: v$(NEXT)"
+	echo "Next release: $(NEXT)"
 
 release:
 #	git tag -a v$(NEXT) -m "Release v$(NEXT)"
