@@ -3,37 +3,55 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/gookit/color"
 	"github.com/likexian/whois"
 	whoisparser "github.com/likexian/whois-parser"
+	"github.com/tlezotte/domain-info/expires"
+	"github.com/tlezotte/domain-info/nameservers"
+	"github.com/tlezotte/domain-info/registrar"
 )
 
-var red = color.FgRed.Render
-//var green = color.FgGreen.Render
-//var yellow = color.FgYellow.Render
+
+var program_name = filepath.Base(os.Args[0])
+var warning_days = 90
+var error_days = 45
+var bold = color.Bold.Render
+var error = color.FgRed.Render
+var warning = color.FgYellow.Render
+//var bold = color.New(color.OpBold)
+//var warning = color.New(color.FgYellow, color.OpBold)
+//var error = color.New(color.FgRed, color.OpBold)
 
 func main() {
-	if len(os.Args) >= 1 {
+	fmt.Println(nameservers.Hello("tom"))
+	fmt.Println(expires.Hello())
+	fmt.Println(registrar.Hello())
+	
+	if len(os.Args) == 2 {
+		domain := os.Args[1]
 		whois_raw := whoisRaw(os.Args[1])
 
 		result, err := whoisparser.Parse(whois_raw)
 		if err == nil {
-			// Print the domain expiration date
-			expireDate := formatTime(result.Domain.ExpirationDate, true)
-			fmt.Printf("This domain expires on %s\n", red(expireDate))
+			expireDate := formatDate(result.Domain.ExpirationDate, false)
+			registrar := result.Registrar.Name
+			ns := result.Domain.NameServers
+			diffDays, highlight := diffExpiration(result.Domain.ExpirationDate)
 
-			// Print the registrar name
-			fmt.Println(result.Registrar.Name)
-
-			// Print the Name Servers
-			fmt.Println(result.Domain.NameServers)
+			fmt.Printf("Domain: %s\n", bold(domain))
+			fmt.Printf("Expires: %s (%d)\n", bold(expireDate), diffDays)
+			fmt.Printf("Status: %s\n", warning(highlight))
+			fmt.Printf("Registrar: %s\n", bold(registrar))
+			fmt.Printf("Name Servers: %s\n", bold(ns))
+			fmt.Println()
 		} else {
 			fmt.Println(err)
 		}
 	} else {
-		fmt.Println("Usage: whois <domain>")
+		print_usage()
 	}
 }
 
@@ -46,12 +64,36 @@ func whoisRaw(domain string) string {
 	}
 }
 
-func formatTime(expirationDate string, forDatabase bool) string {
-	t1, _ := time.Parse(time.RFC3339, expirationDate)
+func formatDate(expirationDate string, forDatabase bool) string {
+	expires, _ := time.Parse(time.RFC3339, expirationDate)
 
 	if forDatabase {
-		return t1.Format("2006-01-02")
+		return expires.Format("2006-01-01")
 	} else {
-		return t1.Format("Jan 2, 2006")	
+		return expires.Format("Jan 1, 2006")
 	}
+}
+
+func diffExpiration(expirationDate string) (int, string) {
+	highlight := "bold"
+	current_date := time.Now()
+	expires, _ := time.Parse(time.RFC3339, expirationDate)
+	
+	diff := expires.Sub(current_date)
+	
+	days := int(diff.Hours() / 24)
+
+	switch {
+	case days <= warning_days:
+		highlight = "warning"
+	case days <= error_days:
+		highlight = "error"
+	}
+
+	return days, highlight
+}
+
+func print_usage() {
+	usage := program_name + " <domain>"
+	fmt.Printf("Usage: %s\n\n", error(usage))
 }

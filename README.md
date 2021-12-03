@@ -1,8 +1,8 @@
-## Prep Server for Deployment
+## Prep for Deployment
 
-### Install Dependencies
+### Install Software
 
-Use make to install all macOS dependencies. `_software` installs the software listed below.
+Use `make` to install all macOS system software.  Installs the software listed below.
 
 ```
 brew install make
@@ -24,13 +24,12 @@ make _software
 - Install AutoTag
 
   ```
-  cd $HOME
-  curl -sL https://git.io/autotag-install | sh --
+  curl -sL https://git.io/autotag-install | sh -s -- -b $HOME/bin
   ```
 
 ### Install Packages
 
-Use make to install all Go packages. `_packages` installs the required Go packages.
+Use `make` to install or update all Go packages.
 
 ```
 make _packages
