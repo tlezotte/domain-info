@@ -6,7 +6,7 @@ RELEASE_DIR  = ..
 RELEASE_FILE = $(PACKAGE)-$(VERSION)
 
 .SILENT: all
-.SILENT: next
+.SILENT: release-next
 .SILENT: _patch
 
 
@@ -20,6 +20,9 @@ release:
 
 release-next:
 	echo "Next release: v$(NEXT)"
+
+release-skip:
+	goreleaser release --skip-publish
 
 release-notag:
 	goreleaser release
