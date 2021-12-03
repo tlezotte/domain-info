@@ -19,6 +19,10 @@ next:
 release:
 #	git tag -a v$(NEXT) -m "Release v$(NEXT)"
 #	git push --tags origin $(BRANCH)
+	autotag -b $(BRANCH)
+	goreleaser release
+
+releaser:
 	goreleaser release
 
 _software:
