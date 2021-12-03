@@ -16,13 +16,15 @@ all:
 
 release:
 	autotag -b $(BRANCH)
+#	git tag -a v$(NEXT) -m "Release v$(NEXT)"
+#	git push origin v$(NEXT)
 	goreleaser release
 
 release-next:
 	echo "Next release: v$(NEXT)"
 
-release-skip:
-	goreleaser release --skip-publish
+release-build:
+	goreleaser release --snapshot --rm-dist
 
 release-notag:
 	goreleaser release
@@ -30,7 +32,7 @@ release-notag:
 
 _patch:
 	# fetch all tags and history:
-	git fetch --tags --unshallow --prune
+	git fetch --tags --prune
 
 	if [ `git rev-parse --abbrev-ref HEAD` != "$(BRANCH)" ]; then
 		# ensure a local branch exists at 'refs/heads/master'
