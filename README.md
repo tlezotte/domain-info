@@ -9,23 +9,9 @@ brew install make
 make _software
 ```
 
-- Install GoReleaser
-
-  ```
-  brew install goreleaser
-  ```
-
-- Install nFPM
-
-  ```
-  brew install nfpm
-  ```
-
-- Install AutoTag
-
-  ```
-  curl -sL https://git.io/autotag-install | sh -s -- -b $HOME/bin
-  ```
+- GoReleaser
+- nFPM
+- AutoTag
 
 ### Install Packages
 

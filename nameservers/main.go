@@ -1,3 +1,4 @@
+// Package is used to get name server date from whois record
 package nameservers
 
 import (
@@ -6,10 +7,12 @@ import (
 	whoisparser "github.com/likexian/whois-parser"
 )
 
-func GetName(result whoisparser.WhoisInfo) string{
+// GetName returns name a server
+func GetName(result whoisparser.WhoisInfo) string {
 	return result.Domain.NameServers[0]
 }
 
+// Are nameservers at VUMC?
 func IsVUMC(result whoisparser.WhoisInfo) bool {
 	return strings.Contains(result.Domain.NameServers[0], "vumc.org")
 }

@@ -48,3 +48,4 @@ _packages:
 	go get -u github.com/gookit/color
 	go get -u github.com/likexian/whois
 	go get -u github.com/likexian/whois-parser
+	go get -u github.com/spf13/cobra/cobra

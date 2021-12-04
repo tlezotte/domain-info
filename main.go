@@ -14,24 +14,25 @@ import (
 	"github.com/tlezotte/domain-info/registrar"
 )
 
-
 var programName = filepath.Base(os.Args[0])
 var bold = color.Bold.Render
 var error = color.FgRed.Render
 var warning = color.FgYellow.Render
+var good = color.FgGreen.Render
+
 //var bold = color.New(color.OpBold)
 //var warning = color.New(color.FgYellow, color.OpBold)
 //var error = color.New(color.FgRed, color.OpBold)
 
 type WhoisData struct {
-	Domain string
-	Expires string
-	DiffDays int
-	Highlight string
-	Registrar string
+	Domain        string
+	Expires       string
+	DiffDays      int
+	Highlight     string
+	Registrar     string
 	VumcRegistrar bool
-	NameServers string
-	VumcNS bool
+	NameServers   string
+	VumcNS        bool
 }
 
 func main() {
@@ -44,14 +45,14 @@ func main() {
 			diffDays, highlight := expires.DiffExpiration(whoisParsed)
 
 			whoisResult := WhoisData{
-				Domain: domainName,
-				Expires: expires.FormatDate(whoisParsed, false),
-				DiffDays: diffDays,
-				Highlight: highlight,
-				Registrar: registrar.GetName(whoisParsed),
+				Domain:        domainName,
+				Expires:       expires.FormatDate(whoisParsed, false),
+				DiffDays:      diffDays,
+				Highlight:     highlight,
+				Registrar:     registrar.GetName(whoisParsed),
 				VumcRegistrar: registrar.IsVUMC(whoisParsed),
-				NameServers: nameservers.GetName(whoisParsed),
-				VumcNS: nameservers.IsVUMC(whoisParsed),
+				NameServers:   nameservers.GetName(whoisParsed),
+				VumcNS:        nameservers.IsVUMC(whoisParsed),
 			}
 
 			outputData(whoisResult)
@@ -63,7 +64,6 @@ func main() {
 	}
 }
 
-
 func getWhois(domain string) string {
 	whoisRaw, err := whois.Whois(domain)
 	if err == nil {
@@ -74,13 +74,13 @@ func getWhois(domain string) string {
 }
 
 func outputData(w WhoisData) {
-	fmt.Printf("Domain: %s\n", bold(w.Domain))
-	fmt.Printf("Expires: %s (%d)\n", bold(w.Expires), w.DiffDays)
-	fmt.Printf("Status: %s\n", warning(w.Highlight))
-	fmt.Printf("Registrar: %s\n", bold(w.Registrar))
-	fmt.Printf("isVUMC: %s\n", bold(w.VumcRegistrar))
-	fmt.Printf("Name Servers: %s\n", bold(w.NameServers))
-	fmt.Printf("isVUMC: %s\n", bold(w.VumcNS))
+	fmt.Printf("Domain Name:\t\t %s\n", bold(w.Domain))
+	fmt.Printf("Expiration Date:\t %s (%s)\n", bold(w.Expires), warning(w.DiffDays))
+	//fmt.Printf("Status: %s\n", warning(w.Highlight))
+	fmt.Printf("Registrar:\t\t %s\n", w.Registrar)
+	fmt.Printf("Registered at VUMC:\t %s\n", good(w.VumcRegistrar))
+	fmt.Printf("Name Server:\t\t %s\n", w.NameServers)
+	fmt.Printf("Hosted at VUMC:\t\t %s\n", good(w.VumcNS))
 	fmt.Println()
 }
 
